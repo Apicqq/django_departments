@@ -1,3 +1,44 @@
 from django.db import models
 
-# Create your models here.
+
+class Department(models.Model):
+    name = models.CharField("Название департамента", max_length=100)
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="subdepartments",
+    )
+
+    class Meta:
+        ordering = ("name",)
+        verbose_name = "Подразделение"
+        verbose_name_plural = "Подразделения"
+
+    def __str__(self):
+        return self.name[:30]
+
+
+class Employee(models.Model):
+    # TODO Добавить констрейнты на имя (не пустое), должность (не пустое),
+    #  зарплата (больше 0), дата приема (не будущая), не пустое подразделение,
+    #  не более одного подразделения у сотрудника
+    full_name = models.CharField("ФИО", max_length=100)
+    position = models.CharField("Должность", max_length=100)
+    date_hired_at = models.DateField("Дата приема на работу")
+    salary = models.DecimalField("Зарплата", max_digits=10, decimal_places=2)
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE,
+        verbose_name="Подразделение",
+        related_name="employees",
+    )
+
+    class Meta:
+        ordering = ("full_name",)
+        verbose_name = "Сотрудник"
+        verbose_name_plural = "Сотрудники"
+
+    def __str__(self):
+        return f"{self.pk}: {self.full_name} - {self.position}"
