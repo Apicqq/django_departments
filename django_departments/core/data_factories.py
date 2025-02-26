@@ -42,6 +42,6 @@ def create_employees(departments):
 
 
 @atomic
-def populate():
+def populate_employees_and_departments():
     departments = create_departments()
     create_employees(departments)
