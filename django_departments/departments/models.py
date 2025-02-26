@@ -9,12 +9,13 @@ class Department(models.Model):
         null=True,
         blank=True,
         related_name="subdepartments",
+        verbose_name="Родительский департамент",
     )
 
     class Meta:
         ordering = ("name",)
-        verbose_name = "Подразделение"
-        verbose_name_plural = "Подразделения"
+        verbose_name = "Департамент"
+        verbose_name_plural = "Департаменты"
 
     def __str__(self):
         return self.name[:30]
@@ -31,7 +32,7 @@ class Employee(models.Model):
     department = models.ForeignKey(
         Department,
         on_delete=models.CASCADE,
-        verbose_name="Подразделение",
+        verbose_name="Департамент",
         related_name="employees",
     )
 
@@ -39,6 +40,10 @@ class Employee(models.Model):
         ordering = ("full_name",)
         verbose_name = "Сотрудник"
         verbose_name_plural = "Сотрудники"
+        constraints = [
+            # ...
+            #TODO add later!
+        ]
 
     def __str__(self):
         return f"{self.pk}: {self.full_name} - {self.position}"
