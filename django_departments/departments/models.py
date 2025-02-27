@@ -3,7 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from departments.validators import (
     min_length_validator,
-    validate_hided_at,
+    validate_hired_at,
     salary_min_value_validator,
 )
 
@@ -52,7 +52,7 @@ class Employee(models.Model):
         "Должность", max_length=100, validators=[min_length_validator]
     )
     date_hired_at = models.DateField(
-        "Дата приема на работу", validators=[validate_hided_at]
+        "Дата приема на работу", validators=[validate_hired_at]
     )
     salary = models.DecimalField(
         "Зарплата",

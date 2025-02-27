@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                 (
                     "date_hired_at",
                     models.DateField(
-                        validators=[departments.validators.validate_hided_at],
+                        validators=[departments.validators.validate_hired_at],
                         verbose_name="Дата приема на работу",
                     ),
                 ),
