@@ -12,6 +12,4 @@ salary_min_value_validator = MinValueValidator(Decimal("0.01"))
 
 def validate_hided_at(value: datetime.date) -> None:
     if value > now():
-        raise ValidationError(
-            "Дата приема на работу не может быть в будущем."
-        )
+        raise ValidationError("Дата приема на работу не может быть в будущем.")

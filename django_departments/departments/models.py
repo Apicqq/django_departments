@@ -1,16 +1,18 @@
 from django.db import models
 
-from departments.validators import min_length_validator, validate_hided_at, \
-    salary_min_value_validator
+from django.core.exceptions import ValidationError
+from departments.validators import (
+    min_length_validator,
+    validate_hided_at,
+    salary_min_value_validator,
+)
 
 
 class Department(models.Model):
     name = models.CharField(
         "Название департамента",
         max_length=100,
-        validators=[
-            min_length_validator
-        ]
+        validators=[min_length_validator],
     )
     parent = models.ForeignKey(
         "self",
@@ -29,28 +31,34 @@ class Department(models.Model):
     def __str__(self):
         return self.name[:30]
 
+    def clean(self):
+        super().clean()
+        level = 0
+        parent = self.parent
+        while parent:
+            level += 1
+            parent = parent.parent
+        if level > 5:
+            raise ValidationError(
+                "Максимальное вложенность подразделений - 5 уровней.",
+            )
+
 
 class Employee(models.Model):
     full_name = models.CharField(
-        "ФИО", max_length=100,
-        validators=[min_length_validator]
+        "ФИО", max_length=100, validators=[min_length_validator]
     )
     position = models.CharField(
-        "Должность",
-        max_length=100,
-        validators=[
-            min_length_validator
-        ]
+        "Должность", max_length=100, validators=[min_length_validator]
     )
     date_hired_at = models.DateField(
-        "Дата приема на работу",
-        validators=[validate_hided_at]
+        "Дата приема на работу", validators=[validate_hided_at]
     )
     salary = models.DecimalField(
         "Зарплата",
         max_digits=10,
         decimal_places=2,
-        validators=[salary_min_value_validator]
+        validators=[salary_min_value_validator],
     )
     department = models.ForeignKey(
         Department,

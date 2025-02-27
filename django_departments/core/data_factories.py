@@ -11,9 +11,11 @@ fake = Faker(locale="ru_RU")
 def create_departments():
     departments = []
     for department in range(25):
-        parent = random.choice(
-            departments
-        ) if departments and random.random() > 0.5 else None
+        parent = (
+            random.choice(departments)
+            if departments and random.random() > 0.5
+            else None
+        )
         department = Department.objects.create(
             name=fake.company(), parent=parent
         )

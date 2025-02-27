@@ -3,9 +3,6 @@ from django.contrib import admin
 from departments.models import Department, Employee
 
 
-# Register your models here.
-
-
 class EmployeeInline(admin.TabularInline):
     model = Employee
     extra = 0
