@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load cache %}
+
+{% block title %}Департаменты{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Департаменты</h1>
+    <ul class="list-group">
+    {% cache 600 departments_list %}
+      {% for department in departments %}
+        {% include "departments/department_item.html" with department=department %}
+      {% endfor %}
+    {% endcache %}
+    </ul>
+  </div>
+{% endblock %}

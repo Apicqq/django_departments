@@ -1,0 +1,13 @@
+<li class="list-group-item">
+    <span class="toggle-btn" onclick="toggleVisibility('dept-{{ department.id }}')">▶</span>
+    <strong>{{ department.name }}</strong>
+
+    <ul id="dept-{{ department.id }}" class="nested list-group mt-2">
+        {% for sub in department.subdepartments.all %}
+            {% include "departments/department_item.html" with department=sub %}
+        {% endfor %}
+        {% for emp in department.employees.all %}
+            <li class="list-group-item">{{ emp.full_name }} — {{ emp.position }}</li>
+        {% endfor %}
+    </ul>
+</li>
